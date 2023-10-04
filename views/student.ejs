@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Lists</title>
+</head>
+<body>
+    <h1>Students List</h1>
+    <table border="1" width = "100%">
+        <tr>
+            <th>S.No</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile No.</th>
+            <th>Actions</th>
+
+        </tr>
+        <% if(student.length>0){ %>
+        <% for(let i =0; i<student.length; i++){ %>
+            <tr>
+                <td><%- student[i].ID %></td>
+                <td><%- student[i].NAME %></td>
+                <td><%- student[i].EMAIL %></td>
+                <td><%- student[i].MOBILE %></td>
+                <td>
+                    <a href="#" onclick="delete_record(this, <%- student[i].ID %> )">Delete</a>
+                    <a href="/update-student?id=<%- student[i].ID %>">Update</a>
+                </td>
+            </tr>
+        <% } %>
+        <% }else{ %> 
+            <h1>Students Data Not Found!</h1>
+        <% } %>
+
+    </table>
+    <div style="color: red;" id="response"></div>
+</body>
+
+
+<script>
+    delete_record=(obj, id)=>{
+        let req = new XMLHttpRequest();
+        req.open("GET", "/delete-student?id=" +id, true);
+        req.send();
+
+        req.onreadystatechange = ()=>{
+            if(req.readyState == 4 && req.status==200){
+           document.getElementById("response").innerHTML = req.responseText;
+           obj.parentElement.parentElement.remove();
+           
+        }
+    }
+
+    }
+</script>
+</html>
